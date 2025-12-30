@@ -1,0 +1,45 @@
+# Ignore certificates and ACME/account data
+nginx/certs/
+nginx/conf.d/
+nginx/html/
+renewal/
+
+# ACME account artifacts (private keys, registration data)
+**/accounts/**/private_key.json
+**/accounts/**/regr.json
+**/accounts/**/meta.json
+
+# Cloudflare / credential files
+**/cloudflare.ini
+
+# Secrets and keys
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+*.jwk
+*.secret
+secrets/
+renewal/**
+renewal/
+geoip2/
+
+# Environment files
+.env
+
+# Large or generated files
+geoip2/*.mmdb
+*.lock
+*.log
+
+# Docker / CI
+docker-compose-certbot*.yml
+
+# Editor / OS
+.vscode/
+/.idea/
+.DS_Store
+Thumbs.db
+__pycache__/
+node_modules/

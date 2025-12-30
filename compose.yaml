@@ -1,0 +1,23 @@
+services:
+  nginx:
+    #image: nginx:alpine
+    build: .
+    container_name: nginx
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/certs:/etc/letsencrypt
+      - ./nginx/include:/etc/nginx/include
+      - ./geoip2:/usr/share/GeoIP
+    network_mode: host
+    restart: unless-stopped
+    depends_on:
+      - geoip-updater
+
+  geoip-updater:
+    image: maxmindinc/geoipupdate:latest
+    container_name: geoip-updater
+    env_file: .env
+    volumes:
+      - ./geoip2:/usr/share/GeoIP
+    restart: on-failure

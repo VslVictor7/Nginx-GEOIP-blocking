@@ -1,0 +1,35 @@
+# Exclude certificates, ACME data and secrets from Docker build context
+nginx/
+renewal
+renewal/**
+
+geoip2/
+
+# ACME account artifacts
+**/accounts/**/private_key.json
+**/accounts/**/regr.json
+**/accounts/**/meta.json
+
+# Credentials
+**/cloudflare.ini
+.env
+.env.*
+*.key
+*.pem
+*.crt
+
+.env
+.env.*
+
+# Large binaries
+geoip2/*.mmdb
+
+# Git and tooling
+.git
+.gitignore
+.vscode
+
+# Logs and temporary files
+*.log
+tmp/
+__pycache__/
