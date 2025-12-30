@@ -1,0 +1,28 @@
+name: Buildar e publicar imagem para o Docker Hub
+
+on:
+  push:
+    branches:
+      - fork
+
+jobs:
+  publish_images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+
+      - name: Buildar imagem Docker
+        run: |
+          docker build . \
+            -t victorvsl7/nginx-geoip-alpine:latest \
+
+      - name: Login no Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_HUB_TOKEN }}" | \
+          docker login -u victorvsl7 --password-stdin
+
+      - name: Publicar imagens no Docker Hub
+        run: |
+          docker push victorvsl7/nginx-geoip-alpine:latest
