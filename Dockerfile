@@ -1,6 +1,6 @@
 ARG NGINX_VERSION=1.29.4
 
-FROM nginx:$NGINX_VERSION-alpine AS builder
+FROM nginx:$NGINX_VERSION-alpine-slim AS builder
 
 ARG NGINX_VERSION=1.29.4
 ARG GEOIP2_VERSION=3.4
@@ -28,7 +28,7 @@ RUN cd /opt \
     && ./configure --with-compat --add-dynamic-module=/opt/ngx_http_geoip2_module \
     && make modules 
 
-FROM nginx:$NGINX_VERSION-alpine
+FROM nginx:$NGINX_VERSION-alpine-slim
 
 COPY --from=builder /opt/nginx/objs/ngx_http_geoip2_module.so /usr/lib/nginx/modules
 
