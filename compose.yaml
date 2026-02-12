@@ -20,4 +20,8 @@ services:
     env_file: .env
     volumes:
       - ./geoip2:/usr/share/GeoIP
+    environment:
+      GEOIPUPDATE_ACCOUNT_ID: ${GEOIP_ACCOUNT_ID}
+      GEOIPUPDATE_LICENSE_KEY: ${GEOIP_LICENSE_KEY}
+      GEOIPUPDATE_EDITION_IDS: ${GEOIP_EDITION_IDS}
     restart: on-failure
