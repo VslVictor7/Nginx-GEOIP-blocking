@@ -17,8 +17,7 @@ jobs:
       - name: Checkout do repositório
         uses: actions/checkout@v4
 
-
-      - name: Buildar imagem Docker
+      - name: Buildar imagem
         run: |
           docker build . \
             -t victorvsl7/nginx-geoip-alpine:latest \
@@ -34,12 +33,6 @@ jobs:
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Publicar imagens no Docker Hub
-        run: |
-          docker push victorvsl7/nginx-geoip-alpine:latest
-
-          - name: Buildar imagem
-
-      - name: Push Docker Hub
         run: docker push victorvsl7/nginx-geoip-alpine:latest
 
       - name: Push GHCR
