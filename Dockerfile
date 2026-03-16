@@ -1,8 +1,6 @@
-ARG NGINX_VERSION=1.29.5
-
 FROM alpine:latest AS builder
 
-ARG NGINX_VERSION=1.29.5
+ARG NGINX_VERSION=1.29.6
 ARG GEOIP2_VERSION=3.4
 
 RUN apk --update --no-cache add \
