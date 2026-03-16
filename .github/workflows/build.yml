@@ -9,19 +9,12 @@ permissions:
   contents: read
   packages: write
 
-
 jobs:
   publish_images:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório
         uses: actions/checkout@v4
-
-      - name: Buildar imagem
-        run: |
-          docker build . \
-            -t victorvsl7/nginx-geoip-alpine:latest \
-            -t ghcr.io/victorvsl7/nginx-geoip-alpine:latest
 
       - name: Login no Docker Hub
         run: |
@@ -31,6 +24,12 @@ jobs:
       - name: Login GHCR
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Buildar imagem
+        run: |
+          docker build . \
+            -t victorvsl7/nginx-geoip-alpine:latest \
+            -t ghcr.io/victorvsl7/nginx-geoip-alpine:latest
 
       - name: Publicar imagens no Docker Hub
         run: docker push victorvsl7/nginx-geoip-alpine:latest
