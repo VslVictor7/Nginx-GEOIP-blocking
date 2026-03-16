@@ -29,10 +29,10 @@ jobs:
         run: |
           docker build . \
             -t victorvsl7/nginx-geoip-alpine:latest \
-            -t ghcr.io/victorvsl7/nginx-geoip-alpine:latest
+            -t ghcr.io/vslvictor7/nginx-geoip-alpine:latest
 
       - name: Publicar imagens no Docker Hub
         run: docker push victorvsl7/nginx-geoip-alpine:latest
 
       - name: Push GHCR
-        run: docker push ghcr.io/victorvsl7/nginx-geoip-alpine:latest
+        run: docker push ghcr.io/vslvictor7/nginx-geoip-alpine:latest
