@@ -1,7 +1,10 @@
-FROM alpine:latest AS builder
-
 ARG NGINX_VERSION=1.29.6
 ARG GEOIP2_VERSION=3.4
+
+FROM alpine:latest AS builder
+
+ARG NGINX_VERSION
+ARG GEOIP2_VERSION
 
 RUN apk --update --no-cache add \
         gcc \
