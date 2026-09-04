@@ -1,4 +1,4 @@
-ARG NGINX_VERSION=1.31.4
+ARG NGINX_VERSION=1.31.5
 ARG GEOIP2_VERSION=3.4
 
 FROM alpine:latest AS builder
@@ -19,6 +19,7 @@ RUN apk --update --no-cache add \
         automake \
         autoconf \
         libmaxminddb-dev \
+        tzdata \
         git
 
 RUN cd /opt \
@@ -27,14 +28,28 @@ RUN cd /opt \
     && mv /opt/nginx-$NGINX_VERSION /opt/nginx \
     && cd /opt/nginx \
     && ./configure --with-compat --add-dynamic-module=/opt/ngx_http_geoip2_module \
-    && make modules 
+    && make modules
+
 
 FROM nginx:$NGINX_VERSION-alpine-slim
 
-COPY --from=builder /opt/nginx/objs/ngx_http_geoip2_module.so /usr/lib/nginx/modules
+ENV TZ=America/Sao_Paulo
 
-RUN grep -q 'include /etc/nginx/modules/\*.conf;' /etc/nginx/nginx.conf \
- || sed -i '2i include /etc/nginx/modules/*.conf;' /etc/nginx/nginx.conf
+COPY --from=builder \
+    /opt/nginx/objs/ngx_http_geoip2_module.so \
+    /usr/lib/nginx/modules/
+
+COPY --from=builder \
+    /usr/share/zoneinfo/America/Sao_Paulo \
+    /usr/share/zoneinfo/America/Sao_Paulo
+
+COPY --from=builder \
+    /usr/share/zoneinfo/America/Sao_Paulo \
+    /etc/localtime
+
+RUN echo "America/Sao_Paulo" > /etc/timezone \
+    && grep -q 'include /etc/nginx/modules/\*.conf;' /etc/nginx/nginx.conf \
+        || sed -i '2i include /etc/nginx/modules/*.conf;' /etc/nginx/nginx.conf
 
 RUN apk add --no-cache libmaxminddb \
     && echo "load_module /usr/lib/nginx/modules/ngx_http_geoip2_module.so;" \
