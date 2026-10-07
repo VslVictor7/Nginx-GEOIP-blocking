@@ -1,9 +1,9 @@
 services:
   nginx:
-    #image: nginx:alpine
-    build: .
+    image: ghcr.io/vslvictor7/nginx-geoip-alpine:latest
     container_name: nginx
     volumes:
+      - ./nginx/logs:/var/log/nginx/crowdsec
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/html:/usr/share/nginx/html
       - ./nginx/certs:/etc/letsencrypt
@@ -13,6 +13,23 @@ services:
     restart: unless-stopped
     depends_on:
       - geoip-updater
+
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    container_name: crowdsec
+    restart: unless-stopped
+    environment:
+      TZ: America/Sao_Paulo
+      COLLECTIONS: crowdsecurity/nginx
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./crowdsec-config:/etc/crowdsec
+      - ./crowdsec-data:/var/lib/crowdsec/data
+      - ./crowdsec/acquis.d:/etc/crowdsec/acquis.d
+      - ./nginx/logs:/var/log/nginx:ro
+    depends_on:
+      - nginx
 
   geoip-updater:
     image: maxmindinc/geoipupdate:latest
