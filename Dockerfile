@@ -1,7 +1,7 @@
-ARG NGINX_VERSION=1.31.5
+ARG NGINX_VERSION=1.31.6
 ARG GEOIP2_VERSION=3.4
 
-FROM alpine:latest AS builder
+FROM alpine:3.24 AS builder
 
 ARG NGINX_VERSION
 ARG GEOIP2_VERSION
@@ -31,7 +31,7 @@ RUN cd /opt \
     && make modules
 
 
-FROM nginx:$NGINX_VERSION-alpine-slim
+FROM nginx:$NGINX_VERSION-alpine3.24-slim
 
 ENV TZ=America/Sao_Paulo
 
